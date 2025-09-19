@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StreamFlow - Your Streaming Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-dash@3.3.0/dist/videojs-dash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-hls@6.0.0/dist/videojs-contrib-hls.min.js"></script>
+    <style>
+      :root {
+        --primary: #3b82f6;
+        --secondary: #1e40af;
+        --dark: #1f2937;
+        --light: #f3f4f6;
+      }
+      
+      body.dark {
+        background-color: #111827;
+        color: #f3f4f6;
+      }
+      
+      body.light {
+        background-color: #f3f4f6;
+        color: #1f2937;
+      }
+      
+      .card {
+        transition: transform 0.3s ease;
+      }
+      
+      .card:hover {
+        transform: translateY(-5px);
+      }
+      
+      .video-js {
+        width: 100%;
+        height: 0;
+        padding-top: 56.25%;
+      }
+      
+      .vjs-fluid {
+        padding-top: 56.25%;
+      }
+    </style>
+  </head>
+  <body class="light">
+    <!-- Navbar -->
+    <nav class="bg-white dark:bg-gray-800 shadow-lg">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between h-16">
+          <div class="flex space-x-4">
+            <div class="flex-shrink-0 flex items-center">
+              <span class="text-xl font-bold text-blue-600 dark:text-blue-400">StreamFlow</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-1">
+              <a href="#" class="py-2 px-3 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded">Home</a>
+              <a href="#" class="py-2 px-3 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded">Live</a>
+              <a href="#" class="py-2 px-3 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded">Categories</a>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3">
+            <div class="relative">
+              <input type="text" placeholder="Search streams..." class="w-full md:w-64 px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <button class="absolute right-0 top-0 mt-2 mr-3 text-gray-400 dark:text-gray-300">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+            <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+              <i class="fas fa-moon text-gray-700 dark:text-yellow-400"></i>
+            </button>
+            <button id="loginBtn" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">Admin Login</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <!-- Hero Section -->
+      <section class="mb-12">
+        <div class="bg-gradient-to-r from-blue-500 to-purple-600 dark:from-blue-700 dark:to-purple-800 rounded-2xl p-8 text-white">
+          <div class="max-w-3xl">
+            <h1 class="text-4xl font-bold mb-4">Stream Your Content</h1>
+            <p class="text-xl mb-6">Watch and share live streams and videos with the world</p>
+            <button class="bg-white text-blue-600 font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-gray-100 transition duration-300">Start Watching</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Streams Grid -->
+      <section>
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold dark:text-white">Featured Streams</h2>
+          <div class="flex space-x-2">
+            <button class="px-4 py-2 bg-gray-200 dark:bg-gray-700 dark:text-white rounded-lg">All</button>
+            <button class="px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-white rounded-lg">Gaming</button>
+            <button class="px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-white rounded-lg">Music</button>
+            <button class="px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-white rounded-lg">Education</button>
+            <button class="px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-white rounded-lg">Sports</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <!-- Stream Card 1 -->
+          <div class="card bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md">
+            <div class="relative">
+              <img src="https://placehold.co/400x225/3b82f6/ffffff?text=Gaming+Stream" alt="Stream thumbnail" class="w-full h-48 object-cover">
+              <span class="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full">LIVE</span>
+            </div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg mb-1 dark:text-white">Epic Gaming Session</h3>
+              <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Playing the latest RPG</p>
+              <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                <span class="flex items-center">
+                  <i class="fas fa-eye mr-1"></i> 2.4K
+                </span>
+                <span class="mx-2">•</span>
+                <span>Gaming</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stream Card 2 -->
+          <div class="card bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md">
+            <div class="relative">
+              <img src="https://placehold.co/400x225/ef4444/ffffff?text=Music+Concert" alt="Stream thumbnail" class="w-full h-48 object-cover">
+              <span class="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full">LIVE</span>
+            </div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg mb-1 dark:text-white">Live Music Performance</h3>
+              <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Acoustic session with Sarah</p>
+              <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                <span class="flex items-center">
+                  <i class="fas fa-eye mr-1"></i> 1.2K
+                </span>
+                <span class="mx-2">•</span>
+                <span>Music</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stream Card 3 -->
+          <div class="card bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md">
+            <div class="relative">
+              <img src="https://placehold.co/400x225/10b981/ffffff?text=Coding+Tutorial" alt="Stream thumbnail" class="w-full h-48 object-cover">
+            </div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg mb-1 dark:text-white">React Advanced Patterns</h3>
+              <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Learn advanced React techniques</p>
+              <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                <span class="flex items-center">
+                  <i class="fas fa-eye mr-1"></i> 845
+                </span>
+                <span class="mx-2">•</span>
+                <span>Education</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stream Card 4 -->
+          <div class="card bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md">
+            <div class="relative">
+              <img src="https://placehold.co/400x225/f97316/ffffff?text=Sports+Highlights" alt="Stream thumbnail" class="w-full h-48 object-cover">
+            </div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg mb-1 dark:text-white">Basketball Highlights</h3>
+              <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Best plays of the season</p>
+              <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                <span class="flex items-center">
+                  <i class="fas fa-eye mr-1"></i> 3.1K
+                </span>
+                <span class="mx-2">•</span>
+                <span>Sports</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Video Player Demo (hidden by default, shown when a stream is selected) -->
+      <section id="playerSection" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden">
+        <div class="w-full h-full flex items-center justify-center">
+          <div class="w-full max-w-4xl mx-auto">
+            <div class="relative">
+              <button id="closePlayer" class="absolute top-4 right-4 z-10 bg-gray-800 text-white rounded-full p-2">
+                <i class="fas fa-times"></i>
+              </button>
+              <div class="relative pt-[56.25%]">
+                <video
+                  id="videoPlayer"
+                  class="video-js vjs-default-skin absolute top-0 left-0 w-full h-full"
+                  controls
+                  preload="auto"
+                  data-setup='{}'
+                >
+                  <p class="vjs-no-js">
+                    To view this video please enable JavaScript, and consider upgrading to a
+                    web browser that
+                    <a href="https://videojs.com/html5-video-support/" target="_blank"
+                      >supports HTML5 video</a
+                    >
+                  </p>
+                </video>
+              </div>
+            </div>
+            <div class="mt-4 text-white">
+              <h2 class="text-2xl font-bold" id="playerTitle">Stream Title</h2>
+              <p id="playerDescription" class="text-gray-300">Stream description goes here</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Admin Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+      <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md">
+          <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-xl font-semibold text-gray-800 dark:text-white">Admin Login</h3>
+          </div>
+          <div class="p-6">
+            <form id="loginForm">
+              <div class="mb-4">
+                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white" placeholder="admin@example.com">
+              </div>
+              <div class="mb-6">
+                <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                <input type="password" id="password" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white" placeholder="••••••••">
+              </div>
+              <div class="flex justify-end">
+                <button type="button" id="cancelLogin" class="mr-3 px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-white rounded-md hover:bg-gray-300 dark:hover:bg-gray-500">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Login</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Theme toggle functionality
+      const themeToggle = document.getElementById('themeToggle');
+      const html = document.documentElement;
+      
+      themeToggle.addEventListener('click', () => {
+        if (html.classList.contains('light')) {
+          html.classList.remove('light');
+          html.classList.add('dark');
+          localStorage.setItem('theme', 'dark');
+          themeToggle.innerHTML = '<i class="fas fa-sun text-yellow-400"></i>';
+        } else {
+          html.classList.remove('dark');
+          html.classList.add('light');
+          localStorage.setItem('theme', 'light');
+          themeToggle.innerHTML = '<i class="fas fa-moon text-gray-700"></i>';
+        }
+      });
+      
+      // Check for saved theme preference
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        html.classList.remove('light');
+        html.classList.add('dark');
+        themeToggle.innerHTML = '<i class="fas fa-sun text-yellow-400"></i>';
+      }
+      
+      // Login modal functionality
+      const loginBtn = document.getElementById('loginBtn');
+      const loginModal = document.getElementById('loginModal');
+      const cancelLogin = document.getElementById('cancelLogin');
+      const loginForm = document.getElementById('loginForm');
+      
+      loginBtn.addEventListener('click', () => {
+        loginModal.classList.remove('hidden');
+      });
+      
+      cancelLogin.addEventListener('click', () => {
+        loginModal.classList.add('hidden');
+      });
+      
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        // In a real app, you would authenticate with your backend here
+        alert('Login functionality would connect to your backend API');
+        loginModal.classList.add('hidden');
+      });
+      
+      // Video player functionality
+      const playerSection = document.getElementById('playerSection');
+      const closePlayer = document.getElementById('closePlayer');
+      const videoPlayer = videojs('videoPlayer');
+      
+      // Simulate opening a stream
+      document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', () => {
+          const title = card.querySelector('h3').textContent;
+          const description = card.querySelector('p').textContent;
+          
+          document.getElementById('playerTitle').textContent = title;
+          document.getElementById('playerDescription').textContent = description;
+          
+          // In a real app, you would set the source based on the stream
+          videoPlayer.src({
+            src: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
+            type: 'application/x-mpegURL'
+          });
+          
+          playerSection.classList.remove('hidden');
+          videoPlayer.play();
+        });
+      });
+      
+      closePlayer.addEventListener('click', () => {
+        playerSection.classList.add('hidden');
+        videoPlayer.pause();
+      });
+    </script>
+  </body>
+</html>
